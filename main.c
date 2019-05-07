@@ -114,13 +114,14 @@ static uint16_t m_samples;
 #define DEVICE_NAME_1k "nRF52-EEG-1kHz"   //"nRF52_EEG"         /**< Name of device. Will be included in the advertising data. */
 #define DEVICE_NAME_2k "nRF52-EEG-2kHz"   //"nRF52_EEG"         /**< Name of device. Will be included in the advertising data. */
 #define DEVICE_NAME_4k "nRF52-EEG-4kHz"   //"nRF52_EEG"         /**< Name of device. Will be included in the advertising data. */
+#define DEVICE_NAME_8k "nRF52-EEG-8kHz"   //"nRF52_EEG"         /**< Name of device. Will be included in the advertising data. */
 
 #define MANUFACTURER_NAME "Potato Labs" /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL 300            /**< The advertising interval (in units of 0.625 ms. This value corresponds to 187.5 ms). */
 #define APP_ADV_TIMEOUT_IN_SECONDS 180  /**< The advertising timeout in units of seconds. */
 
-#define MIN_CONN_INTERVAL MSEC_TO_UNITS(16, UNIT_1_25_MS) /**< Minimum acceptable connection interval (0.1 seconds). */
-#define MAX_CONN_INTERVAL MSEC_TO_UNITS(20, UNIT_1_25_MS) /**< Maximum acceptable connection interval (0.2 second). */
+#define MIN_CONN_INTERVAL MSEC_TO_UNITS(7.5, UNIT_1_25_MS) /**< Minimum acceptable connection interval (0.1 seconds). */
+#define MAX_CONN_INTERVAL MSEC_TO_UNITS(10, UNIT_1_25_MS) /**< Maximum acceptable connection interval (0.2 second). */
 #define SLAVE_LATENCY 0                                   /**< Slave latency. */
 #define CONN_SUP_TIMEOUT MSEC_TO_UNITS(4000, UNIT_10_MS)  /**< Connection supervisory timeout (4 seconds). */
 
@@ -130,7 +131,7 @@ static uint16_t m_samples;
 #define NEXT_CONN_PARAMS_UPDATE_DELAY APP_TIMER_TICKS(30000) /**< Time between each call to sd_ble_gap_conn_param_update after the first call (30 seconds). */
 #define MAX_CONN_PARAMS_UPDATE_COUNT 3                       /**< Number of attempts before giving up the connection parameter negotiation. */
 
-#define HVN_TX_QUEUE_SIZE 12
+#define HVN_TX_QUEUE_SIZE 128
 
 #define SEC_PARAM_BOND 1                               /**< Perform bonding. */
 #define SEC_PARAM_MITM 0                               /**< Man In The Middle protection not required. */
@@ -237,6 +238,9 @@ static void gap_params_init(void) {
   } else if (ADS1299_REGDEFAULT_CONFIG1 == 0x92) {
     err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME_4k,
         strlen(DEVICE_NAME_4k));
+  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0x91) {
+    err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME_8k,
+        strlen(DEVICE_NAME_8k));
   }
 
   APP_ERROR_CHECK(err_code);
@@ -819,9 +823,9 @@ int main(void) {
 // Enter main loop
 #if NRF_LOG_ENABLED == 1
   for (;;) {
-    if (!NRF_LOG_PROCESS()) {
-      wait_for_event();
-    }
+//    if (!NRF_LOG_PROCESS()) {
+//      wait_for_event();
+//    }
     if (m_drdy) {
       m_drdy = false;
       if (m_connected) {
