@@ -60,7 +60,7 @@ void ads_spi_init(void) {
   nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
   spi_config.bit_order = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST;
   //SCLK = 1MHz is right speed because fCLK = (1/2)*SCLK, and fMOD = fCLK/4, and fMOD MUST BE 128kHz. Do the math.
-  spi_config.frequency = NRF_DRV_SPI_FREQ_4M;
+  spi_config.frequency = NRF_DRV_SPI_FREQ_2M;
   spi_config.irq_priority = APP_IRQ_PRIORITY_HIGHEST; //APP_IRQ_PRIORITY_HIGHEST;
   spi_config.mode = NRF_DRV_SPI_MODE_1;               //CPOL = 0 (Active High); CPHA = TRAILING (1)
   spi_config.miso_pin = ADS1299_SPI_MISO_PIN;
@@ -69,6 +69,25 @@ void ads_spi_init(void) {
   spi_config.ss_pin = ADS1299_SPI_CS_PIN;
   spi_config.orc = 0x55;
   APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler, NULL));
+  nrf_gpio_cfg(spi_config.sck_pin, 
+             NRF_GPIO_PIN_DIR_OUTPUT,
+             NRF_GPIO_PIN_INPUT_CONNECT,
+             NRF_GPIO_PIN_NOPULL,
+             NRF_GPIO_PIN_H0H1,
+             NRF_GPIO_PIN_NOSENSE);
+  nrf_gpio_cfg(spi_config.miso_pin, 
+               NRF_GPIO_PIN_DIR_OUTPUT,
+               NRF_GPIO_PIN_INPUT_CONNECT,
+               NRF_GPIO_PIN_NOPULL,
+               NRF_GPIO_PIN_H0H1,
+               NRF_GPIO_PIN_NOSENSE);
+  nrf_gpio_cfg(spi_config.mosi_pin, 
+               NRF_GPIO_PIN_DIR_OUTPUT,
+               NRF_GPIO_PIN_INPUT_CONNECT,
+               NRF_GPIO_PIN_NOPULL,
+               NRF_GPIO_PIN_H0H1,
+               NRF_GPIO_PIN_NOSENSE);
+
 #if LOG_LOW_DETAIL == 1
   NRF_LOG_INFO(" SPI Initialized..\r\n");
 #endif
