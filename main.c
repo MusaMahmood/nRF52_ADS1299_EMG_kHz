@@ -90,6 +90,7 @@
 #define DEVICE_FIRMWARE_STRING "Version 13.1.0"
 ble_eeg_t m_eeg;
 static bool m_connected = false;
+static volatile bool m_drdy = false;
 #define SPI_SCLK_WRITE_REG 1
 #define SPI_SCLK_SAMPLING 2
 #endif
@@ -723,17 +724,7 @@ void mpu_setup(void) {
 void in_pin_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {
   UNUSED_PARAMETER(pin);
   UNUSED_PARAMETER(action);
-  if (m_connected) {
-    get_eeg_voltage_array_4ch(&m_eeg);
-  }
-#if defined(APP_TIMER_SAMPLING) && APP_TIMER_SAMPLING == 1
-  m_samples += 1;
-#endif
-  if (m_eeg.eeg_ch1_count == EEG_PACKET_LENGTH) {
-    m_eeg.eeg_ch1_count = 0;
-//    ble_eeg_update_4ch(&m_eeg);
-    ble_eeg_update_1ch_v2(&m_eeg);
-  }
+  m_drdy = true;  
 }
 
 static void ads1299_gpio_init(void) {
@@ -830,6 +821,19 @@ int main(void) {
   for (;;) {
     if (!NRF_LOG_PROCESS()) {
       wait_for_event();
+    }
+    if (m_drdy) {
+      m_drdy = false;
+      if (m_connected) {
+        get_eeg_voltage_array(&m_eeg);
+      }
+      #if defined(APP_TIMER_SAMPLING) && APP_TIMER_SAMPLING == 1
+      m_samples += 1;
+      #endif
+      if (m_eeg.eeg_ch1_count == EEG_PACKET_LENGTH) {
+        m_eeg.eeg_ch1_count = 0;
+        ble_eeg_update_1ch_v2(&m_eeg);
+      }
     }
   }
 #endif

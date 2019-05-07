@@ -371,14 +371,13 @@ void ads1299_read_all_registers(ble_eeg_t *p_eeg) {
  *          
  */
 void get_eeg_voltage_array(ble_eeg_t *p_eeg) {
-  memset(rx_data, 0, RX_DATA_LEN);
+  memset(rx_data, 0, 6);
   spi_xfer_done = false;
-  APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi, NULL, 0, rx_data, RX_DATA_LEN));
+  APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi, NULL, 0, rx_data, 6));
   while (!spi_xfer_done)
     __WFE();
-  p_eeg->eeg_ch1_buffer[p_eeg->eeg_ch1_count++] = rx_data[3];
-  p_eeg->eeg_ch1_buffer[p_eeg->eeg_ch1_count++] = rx_data[4];
-  p_eeg->eeg_ch1_buffer[p_eeg->eeg_ch1_count++] = rx_data[5];
+  memcpy_fast(&p_eeg->eeg_ch1_buffer[p_eeg->eeg_ch1_count], &rx_data[3], 3); 
+  p_eeg->eeg_ch1_count += 3;
 }
 
 void get_eeg_voltage_array_4ch(ble_eeg_t *p_eeg) {
