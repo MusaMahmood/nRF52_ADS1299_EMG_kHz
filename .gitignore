@@ -1,0 +1,22 @@
+ads1291-2.h~RF148cf4c5.TMP
+ble_app_template.eww
+custom_board/s130/arm5_no_packs/JLinkLog.txt
+custom_board/s130/arm5_no_packs/JLinkSettings.ini
+custom_board/s130/arm5_no_packs/RTE/Device/nRF51422_xxAC/arm_startup_nrf51.s
+custom_board/s130/arm5_no_packs/_build/
+custom_board/s130/armgcc/Makefile
+custom_board/s130/armgcc/ble_app_template_gcc_nrf51.ld
+custom_board/s130/iar/ble_app_template_iar_nRF5x.icf
+custom_board/s130/iar/ble_app_template_s130_pca10028.ewd
+custom_board/s130/iar/ble_app_template_s130_pca10028.ewp
+hex/ble_app_template_s130_pca10028.hex
+hex/ble_app_template_s132_pca10036.hex
+hex/ble_app_template_s132_pca10040.hex
+Abstract.txt
+license.txt
+custom_board/s130/arm5_no_packs/_build/ads1299-x.o
+custom_board/s130/arm5_no_packs/_build/
+pca10040/s132/arm5_no_packs/_build/
+pca10040/s132/arm5_no_packs/Output/ble_app_template_pca10040_s132 nrf52832_xxaa/Obj/ads1299-x.d
+pca10040/s132/arm5_no_packs/Output/
+desktop.ini
