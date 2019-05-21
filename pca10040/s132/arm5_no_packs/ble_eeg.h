@@ -55,11 +55,7 @@
 #define BLE_UUID_EEG_CH3_CHAR 0xEEF3
 #define BLE_UUID_EEG_CH4_CHAR 0xEEF4
 
-#if SAMPLE_RATE == 250
-#define EEG_PACKET_LENGTH 18
-#else
-#define EEG_PACKET_LENGTH 246
-#endif
+#define EEG_PACKET_LENGTH 180
 
 //Forward declaration of ble_eeg_t type:
 typedef struct ble_eeg_s ble_eeg_t;

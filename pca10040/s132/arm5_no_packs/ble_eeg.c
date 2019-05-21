@@ -28,9 +28,6 @@
 #include "nrf_log.h"
 #include <string.h>
 
-#define MAX_LEN_BLE_PACKET_BYTES 246 //20*3bytes																						 /**< Maximum size in bytes of a transmitted Body Voltage Measurement. */
-                                     //20*3bytes																						 /**< Maximum size in bytes of a transmitted Body Voltage Measurement. */
-
 static void on_write(ble_eeg_t *p_eeg, ble_evt_t *p_ble_evt) {
   ble_gatts_evt_write_t *p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
 

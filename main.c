@@ -131,7 +131,7 @@ static uint16_t m_samples;
 #define NEXT_CONN_PARAMS_UPDATE_DELAY APP_TIMER_TICKS(30000) /**< Time between each call to sd_ble_gap_conn_param_update after the first call (30 seconds). */
 #define MAX_CONN_PARAMS_UPDATE_COUNT 3                       /**< Number of attempts before giving up the connection parameter negotiation. */
 
-#define HVN_TX_QUEUE_SIZE 128
+#define HVN_TX_QUEUE_SIZE 32
 
 #define SEC_PARAM_BOND 1                               /**< Perform bonding. */
 #define SEC_PARAM_MITM 0                               /**< Man In The Middle protection not required. */
@@ -223,22 +223,22 @@ static void gap_params_init(void) {
   ble_gap_conn_sec_mode_t sec_mode;
 
   BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
-  if (ADS1299_REGDEFAULT_CONFIG1 == 0x96) {
+  if (ADS1299_REGDEFAULT_CONFIG1 == 0xD6) {
     err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME,
         strlen(DEVICE_NAME));
-  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0x95) {
+  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0xD5) {
     err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME_500,
         strlen(DEVICE_NAME_500));
-  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0x94) {
+  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0xD4) {
     err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME_1k,
         strlen(DEVICE_NAME_1k));
-  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0x93) {
+  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0xD3) {
     err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME_2k,
         strlen(DEVICE_NAME_2k));
-  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0x92) {
+  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0xD2) {
     err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME_4k,
         strlen(DEVICE_NAME_4k));
-  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0x91) {
+  } else if (ADS1299_REGDEFAULT_CONFIG1 == 0xD1) {
     err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME_8k,
         strlen(DEVICE_NAME_8k));
   }
